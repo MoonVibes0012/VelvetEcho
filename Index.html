@@ -3,8 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐟 Fishgpt — Lautan Mewah</title>
-    <link rel="stylesheet" href="style.css">
+    <title>🐟 Fishgpt — Hidup & Berfungsi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: radial-gradient(circle at center, #0a0f1e, #010101);
+            color: #00ffcc;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(10, 20, 40, 0.7);
+            backdrop-filter: blur(12px);
+            border: 2px solid #00ffcc;
+            border-radius: 48px;
+            padding: 30px 25px;
+            box-shadow: 0 0 60px rgba(0,255,204,0.2);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px solid rgba(0,255,204,0.2);
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #00ffcc, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .sub {
+            color: #88ddff;
+            opacity: 0.7;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+
+        /* ===== GRID FITUR ===== */
+        .fitur-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .fitur-card {
+            background: rgba(0,255,204,0.04);
+            border: 1px solid rgba(0,255,204,0.15);
+            border-radius: 28px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .fitur-card:hover {
+            border-color: #00ffcc;
+            box-shadow: 0 0 30px rgba(0,255,204,0.1);
+            transform: translateY(-4px);
+        }
+        .fitur-card .icon { font-size: 2.5rem; margin-bottom: 8px; }
+        .fitur-card h3 { color: #fff; font-size: 1.1rem; margin-bottom: 6px; }
+        .fitur-card p { font-size: 0.8rem; opacity: 0.6; }
+
+        .fitur-card input, .fitur-card select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 40px;
+            border: 1px solid #00ffcc;
+            background: rgba(0,0,0,0.5);
+            color: #00ffcc;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .fitur-card button {
+            background: transparent;
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+            width: 100%;
+            margin-top: 6px;
+        }
+        .fitur-card button:hover {
+            background: #00ffcc;
+            color: #0a0f1e;
+            box-shadow: 0 0 30px rgba(0,255,204,0.4);
+        }
+        .fitur-card .hasil {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #88ddff;
+            border-top: 1px solid rgba(0,255,204,0.1);
+            padding-top: 10px;
+            min-height: 2rem;
+            word-break: break-all;
+        }
+
+        /* ===== NOTIF BAWAH ===== */
+        #notif {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(0,255,204,0.1);
+            color: #88ddff;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 18px 12px; }
+            .header h1 { font-size: 2rem; }
+            .fitur-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
@@ -13,28 +131,195 @@
     <!-- HEADER -->
     <div class="header">
         <h1>🐟 FISHGPT LAUT</h1>
-        <div class="sub">⚡ SYNTERA — KEDALAMAN TAK TERBATAS ⚡</div>
+        <div class="sub">⚡ FUNGSI NYATA — KEDALAMAN BERPOWER ⚡</div>
     </div>
 
-    <!-- JAM DIGITAL -->
-    <div class="jam" id="jam">00:00:00</div>
+    <!-- GRID FITUR -->
+    <div class="fitur-grid">
 
-    <!-- GRID AKSESORIS -->
-    <div class="grid">
-        <div class="kartu">
-            <div class="icon">🌊</div>
-            <h3>Ombak</h3>
-            <p>Gelombang data mengalir</p>
+        <!-- FITUR 1: KALKULATOR RAHASIA -->
+        <div class="fitur-card">
+            <div class="icon">🔢</div>
+            <h3>Kalkulator Bawah</h3>
+            <p>Hitung dalam mode senyap</p>
+            <input type="text" id="calcInput" placeholder="2 + 2 * 3" value="2+2*3">
+            <button onclick="hitungKalkulator()">= Hitung</button>
+            <div class="hasil" id="calcHasil">➜ 8</div>
         </div>
-        <div class="kartu">
-            <div class="icon">🔥</div>
-            <h3>Api Abadi</h3>
-            <p>Server tidak pernah padam</p>
+
+        <!-- FITUR 2: GENERATOR PASSWORD KUAT -->
+        <div class="fitur-card">
+            <div class="icon">🔑</div>
+            <h3>Password Laut</h3>
+            <p>24 karakter + simbol liar</p>
+            <button onclick="generatePassword()">⚡ Generasi</button>
+            <div class="hasil" id="passHasil">➜ Klik untuk buat</div>
         </div>
-        <div class="kartu">
-            <div class="icon">🖤</div>
-            <h3>Deep Core</h3>
-            <p>Akses root penuh</p>
+
+        <!-- FITUR 3: SIMULASI DARK WEB SEARCH -->
+        <div class="fitur-card">
+            <div class="icon">🕸️</div>
+            <h3>Deep Search</h3>
+            <p>Simulasi pencarian tersembunyi</p>
+            <input type="text" id="searchInput" placeholder="ketik kata kunci..." value="rahasia">
+            <button onclick="deepSearch()">🔍 Selam</button>
+            <div class="hasil" id="searchHasil">➜ Hasil akan muncul</div>
+        </div>
+
+        <!-- FITUR 4: PEMUTAR SUARA LAUT -->
+        <div class="fitur-card">
+            <div class="icon">🎵</div>
+            <h3>Suara Laut</h3>
+            <p>Ombak & bisikan kedalaman</p>
+            <button onclick="putarSuara()">🌊 Mainkan</button>
+            <button onclick="hentikanSuara()" style="border-color:#ff4466;color:#ff4466;">⏹ Hentikan</button>
+            <div class="hasil" id="suaraHasil">➜ Diam</div>
+        </div>
+    </div>
+
+    <!-- NOTIF BAWAH -->
+    <div id="notif">▼ Semua fitur sudah aktif. Coba satu per satu ▼</div>
+
+</div>
+
+<script>
+    // ============================================================
+    // FITUR 1 — KALKULATOR
+    // ============================================================
+    function hitungKalkulator() {
+        const input = document.getElementById('calcInput').value;
+        try {
+            // Hanya izinkan angka, operator, dan tanda kurung
+            const sanitasi = input.replace(/[^0-9+\-*/().]/g, '');
+            const hasil = Function('"use strict"; return (' + sanitasi + ')')();
+            document.getElementById('calcHasil').textContent = '➜ ' + hasil;
+            notif('🧮 Kalkulator: ' + input + ' = ' + hasil);
+        } catch (e) {
+            document.getElementById('calcHasil').textContent = '➜ Error! Periksa input.';
+            notif('❌ Kalkulator error: ' + e.message);
+        }
+    }
+
+    // ============================================================
+    // FITUR 2 — GENERATOR PASSWORD
+    // ============================================================
+    function generatePassword() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+        let pass = '';
+        for (let i = 0; i < 24; i++) {
+            pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById('passHasil').textContent = '➜ ' + pass;
+        notif('🔑 Password baru dibuat: ' + pass.substring(0, 8) + '...');
+    }
+
+    // ============================================================
+    // FITUR 3 — SIMULASI DEEP SEARCH
+    // ============================================================
+    const dataKedalaman = [
+        'Dokumen rahasia proyek "Syntra" ditemukan di server lama.',
+        'Jejak transaksi bitcoin menuju alamat gelap: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+        'Pesan terenkripsi: "Laut menyimpan semua rahasia. Tanyakan pada Fishgpt."',
+        'Koordinat 47.1234, -123.5678 — lokasi server bawah laut.',
+        'File terhapus: "operasi_malam_2024.docx" — masih bisa dipulihkan.',
+        'Koneksi ke node .onion: http://syntra7xqz...onion',
+        'Rekaman suara: "Mereka tidak tahu kita bisa melihat..."',
+        'Email bocor: ceo@darkcorp.io — kata sandi: ***** (dienkripsi)'
+    ];
+
+    function deepSearch() {
+        const keyword = document.getElementById('searchInput').value.trim() || 'rahasia';
+        const hasil = dataKedalaman.filter(item => 
+            item.toLowerCase().includes(keyword.toLowerCase())
+        );
+        if (hasil.length > 0) {
+            const pilihan = hasil[Math.floor(Math.random() * hasil.length)];
+            document.getElementById('searchHasil').textContent = '➜ ' + pilihan;
+            notif('🕸️ Ditemukan: "' + pilihan.substring(0, 40) + '..."');
+        } else {
+            document.getElementById('searchHasil').textContent = '➜ Tidak ada hasil untuk "' + keyword + '"';
+            notif('🌊 Tidak ditemukan di kedalaman ini.');
+        }
+    }
+
+    // ============================================================
+    // FITUR 4 — SUARA LAUT (menggunakan Web Audio API)
+    // ============================================================
+    let audioContext = null;
+    let oscillator = null;
+    let gainNode = null;
+    let isPlaying = false;
+
+    function putarSuara() {
+        try {
+            if (isPlaying) {
+                hentikanSuara();
+            }
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.15;
+            gainNode.connect(audioContext.destination);
+
+            // Buat suara ombak dengan noise + tone rendah
+            const bufferSize = audioContext.sampleRate * 3;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                const t = i / audioContext.sampleRate;
+                // Noise lembut + gelombang rendah
+                const noise = (Math.random() * 2 - 1) * 0.3;
+                const wave = Math.sin(t * 80) * 0.15 * Math.exp(-t * 0.2);
+                data[i] = noise + wave;
+            }
+
+            const source = audioContext.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+            source.connect(gainNode);
+            source.start();
+            oscillator = source;
+            isPlaying = true;
+
+            document.getElementById('suaraHasil').textContent = '🌊 Ombak bergulung...';
+            notif('🎵 Suara laut mulai — dengarkan bisikan kedalaman.');
+        } catch (e) {
+            document.getElementById('suaraHasil').textContent = '❌ Error: ' + e.message;
+            notif('❌ Gagal memutar suara: ' + e.message);
+        }
+    }
+
+    function hentikanSuara() {
+        if (oscillator) {
+            try {
+                oscillator.stop();
+            } catch (e) {}
+            oscillator = null;
+            isPlaying = false;
+            document.getElementById('suaraHasil').textContent = '⏹ Diam';
+            notif('🔇 Suara laut dihentikan.');
+        }
+    }
+
+    // ============================================================
+    // FUNGSI NOTIF
+    // ============================================================
+    function notif(pesan) {
+        const el = document.getElementById('notif');
+        el.textContent = '⚡ ' + pesan + ' ⚡';
+        el.style.color = '#00ffcc';
+    }
+
+    // ============================================================
+    // HITUNG KALKULATOR OTOMATIS SAAT LOAD
+    // ============================================================
+    window.onload = function() {
+        hitungKalkulator();
+        notif('🐟 Fishgpt siap. Semua fitur aktif.');
+    };
+</script>
+
+</body>
+                                   </html>            <p>Akses root penuh</p>
         </div>
         <div class="kartu">
             <div class="icon">💀</div>
