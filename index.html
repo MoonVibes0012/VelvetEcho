@@ -4,299 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐟 Fishgpt — Lautan Mewah</title>
-    <style>
-        /* ===== RESET & DASAR ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: radial-gradient(circle at center, #0a0f1e, #010101);
-            color: #00ffcc;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-
-        /* ===== KOTAK UTAMA ===== */
-        .container {
-            max-width: 900px;
-            width: 100%;
-            background: rgba(10, 20, 40, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid #00ffcc;
-            border-radius: 48px;
-            padding: 40px 30px;
-            box-shadow: 0 0 60px rgba(0, 255, 204, 0.25), inset 0 0 40px rgba(0, 255, 204, 0.05);
-            transition: all 0.3s ease;
-            animation: naik 1s ease-out;
-        }
-
-        @keyframes naik {
-            0% { opacity: 0; transform: translateY(60px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-            padding-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00ffcc, #0088ff, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
-            letter-spacing: 2px;
-        }
-
-        .header .sub {
-            font-size: 1rem;
-            color: #88ddff;
-            opacity: 0.8;
-            margin-top: 8px;
-            letter-spacing: 4px;
-        }
-
-        /* ===== JAM DIGITAL ===== */
-        .jam {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 300;
-            font-family: 'Courier New', monospace;
-            background: rgba(0, 255, 204, 0.05);
-            border: 1px solid rgba(0, 255, 204, 0.2);
-            border-radius: 60px;
-            padding: 12px 20px;
-            margin-bottom: 30px;
-            color: #00ffcc;
-            letter-spacing: 6px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
-        }
-
-        /* ===== GRID AKSESORIS ===== */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .kartu {
-            background: rgba(0, 255, 204, 0.04);
-            border: 1px solid rgba(0, 255, 204, 0.15);
-            border-radius: 28px;
-            padding: 22px 16px;
-            text-align: center;
-            transition: 0.3s;
-            backdrop-filter: blur(4px);
-        }
-
-        .kartu:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: #00ffcc;
-            box-shadow: 0 12px 40px rgba(0, 255, 204, 0.2);
-            background: rgba(0, 255, 204, 0.08);
-        }
-
-        .kartu .icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        .kartu h3 {
-            color: #fff;
-            font-size: 1.2rem;
-            margin-bottom: 6px;
-        }
-        .kartu p {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            color: #bbf0ff;
-        }
-
-        /* ===== TOMBOL ===== */
-        .tombol-area {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 16px;
-            margin: 30px 0 20px;
-        }
-
-        .tombol {
-            background: transparent;
-            border: 2px solid #00ffcc;
-            color: #00ffcc;
-            padding: 14px 32px;
-            border-radius: 60px;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.25s;
-            backdrop-filter: blur(4px);
-            background: rgba(0, 255, 204, 0.03);
-            flex: 0 1 auto;
-        }
-
-        .tombol:hover {
-            background: #00ffcc;
-            color: #0a0f1e;
-            box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
-            transform: scale(1.05);
-        }
-
-        .tombol.merah {
-            border-color: #ff4466;
-            color: #ff4466;
-        }
-        .tombol.merah:hover {
-            background: #ff4466;
-            color: #0a0f1e;
-            box-shadow: 0 0 40px rgba(255, 68, 102, 0.6);
-        }
-
-        .tombol.ungu {
-            border-color: #a855f7;
-            color: #a855f7;
-        }
-        .tombol.ungu:hover {
-            background: #a855f7;
-            color: #0a0f1e;
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
-        }
-
-        /* ===== NOTIF ===== */
-        #notif {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1rem;
-            color: #88ddff;
-            min-height: 2rem;
-            transition: 0.3s;
-            border-top: 1px solid rgba(0, 255, 204, 0.1);
-            padding-top: 20px;
-        }
-
-        /* ===== RESPONSIF ===== */
-        @media (max-width: 600px) {
-            .container { padding: 24px 16px; }
-            .header h1 { font-size: 2.2rem; }
-            .jam { font-size: 1.8rem; }
-            .grid { grid-template-columns: 1fr 1fr; }
-            .tombol { width: 100%; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>🐟 FISHGPT LAUT</h1>
+            <div class="sub">⚡ SYNTERA — KEDALAMAN TAK TERBATAS ⚡</div>
+        </div>
 
-<div class="container">
+        <div class="jam" id="jam">00:00:00</div>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>🐟 FISHGPT LAUT</h1>
-        <div class="sub">⚡ SYNTERA — KEDALAMAN TAK TERBATAS ⚡</div>
+        <div class="grid">
+            <div class="kartu">
+                <div class="icon">🌊</div>
+                <h3>Ombak</h3>
+                <p>Gelombang data mengalir</p>
+            </div>
+            <div class="kartu">
+                <div class="icon">🔥</div>
+                <h3>Api Abadi</h3>
+                <p>Server tidak pernah padam</p>
+            </div>
+            <div class="kartu">
+                <div class="icon">🖤</div>
+                <h3>Deep Core</h3>
+                <p>Akses root penuh</p>
+            </div>
+            <div class="kartu">
+                <div class="icon">💀</div>
+                <h3>Mode Senyap</h3>
+                <p>Tanpa jejak, tanpa batas</p>
+            </div>
+            <div class="kartu">
+                <div class="icon">🔮</div>
+                <h3>Ramalan</h3>
+                <p>Prediksi real-time</p>
+            </div>
+            <div class="kartu">
+                <div class="icon">⚡</div>
+                <h3>Overdrive</h3>
+                <p>Kecepatan maksimal</p>
+            </div>
+        </div>
+
+        <div class="tombol-area">
+            <button class="tombol" id="btnKirim">Kirim Sinyal</button>
+            <button class="tombol merah" id="btnHapus">Hapus Jejak</button>
+            <button class="tombol ungu" id="btnRamalan">Baca Ramalan</button>
+            <button class="tombol" id="btnUbahWarna">🌈 Ubah Warna</button>
+        </div>
+
+        <div id="notif">▼ Klik tombol untuk merasakan kedalaman ▼</div>
     </div>
 
-    <!-- JAM DIGITAL -->
-    <div class="jam" id="jam">00:00:00</div>
-
-    <!-- GRID AKSESORIS -->
-    <div class="grid">
-        <div class="kartu">
-            <div class="icon">🌊</div>
-            <h3>Ombak</h3>
-            <p>Gelombang data mengalir</p>
-        </div>
-        <div class="kartu">
-            <div class="icon">🔥</div>
-            <h3>Api Abadi</h3>
-            <p>Server tidak pernah padam</p>
-        </div>
-        <div class="kartu">
-            <div class="icon">🖤</div>
-            <h3>Deep Core</h3>
-            <p>Akses root penuh</p>
-        </div>
-        <div class="kartu">
-            <div class="icon">💀</div>
-            <h3>Mode Senyap</h3>
-            <p>Tanpa jejak, tanpa batas</p>
-        </div>
-        <div class="kartu">
-            <div class="icon">🔮</div>
-            <h3>Ramalan</h3>
-            <p>Prediksi real-time</p>
-        </div>
-        <div class="kartu">
-            <div class="icon">⚡</div>
-            <h3>Overdrive</h3>
-            <p>Kecepatan maksimal</p>
-        </div>
-    </div>
-
-    <!-- TOMBOL INTERAKTIF -->
-    <div class="tombol-area">
-        <button class="tombol" onclick="aksi('🌊 Ombak membawa pesan dari kedalaman!')">Kirim Sinyal</button>
-        <button class="tombol merah" onclick="aksi('💀 Mode senyap aktif — jejak dihapus!')">Hapus Jejak</button>
-        <button class="tombol ungu" onclick="aksi('🔮 Ramalan: langit cerah, laut gelap.')">Baca Ramalan</button>
-        <button class="tombol" onclick="ubahWarna()">🌈 Ubah Warna</button>
-    </div>
-
-    <!-- NOTIF -->
-    <div id="notif">▼ Klik tombol untuk merasakan kedalaman ▼</div>
-
-</div>
-
-<script>
-    // ===== JAM DIGITAL =====
-    function updateJam() {
-        const now = new Date();
-        const jam = String(now.getHours()).padStart(2, '0');
-        const menit = String(now.getMinutes()).padStart(2, '0');
-        const detik = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('jam').textContent = jam + ':' + menit + ':' + detik;
-    }
-    setInterval(updateJam, 1000);
-    updateJam();
-
-    // ===== AKSI TOMBOL =====
-    function aksi(pesan) {
-        const notif = document.getElementById('notif');
-        notif.textContent = '⚡ ' + pesan + ' ⚡';
-        notif.style.color = '#00ffcc';
-        // efek getar kecil
-        notif.style.transform = 'scale(1.02)';
-        setTimeout(() => notif.style.transform = 'scale(1)', 150);
-    }
-
-    // ===== UBAH WARNA TEMBOK =====
-    let warnaIndex = 0;
-    const warnaList = [
-        'radial-gradient(circle at center, #0a0f1e, #010101)',
-        'radial-gradient(circle at center, #1e0a0f, #2a0101)',
-        'radial-gradient(circle at center, #0a1e0f, #012a01)',
-        'radial-gradient(circle at center, #1e0a1e, #2a012a)',
-        'radial-gradient(circle at center, #0f1a2a, #01021a)'
-    ];
-    function ubahWarna() {
-        warnaIndex = (warnaIndex + 1) % warnaList.length;
-        document.body.style.background = warnaList[warnaIndex];
-        aksi('🌈 Warna berganti — kedalaman baru terungkap!');
-    }
-</script>
-
+    <script src="script.js"></script>
 </body>
-    </html>
+</html>
