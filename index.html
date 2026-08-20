@@ -3,61 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐟 Fishgpt — Lautan Mewah</title>
+    <title>🐟 Fishgpt — Lautan Ultra</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- KANVAS UNTUK PARTIKEL -->
+    <canvas id="lautCanvas"></canvas>
+
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
-            <h1>🐟 FISHGPT LAUT</h1>
+            <h1>🐟 FISHGPT ULTRA</h1>
             <div class="sub">⚡ SYNTERA — KEDALAMAN TAK TERBATAS ⚡</div>
         </div>
 
-        <div class="jam" id="jam">00:00:00</div>
+        <!-- STATUS SERVER + JAM -->
+        <div class="status-bar">
+            <span id="statusServer">🟢 Server: Online</span>
+            <span id="jam">00:00:00</span>
+        </div>
 
+        <!-- GRID AKSESORIS -->
         <div class="grid">
-            <div class="kartu">
-                <div class="icon">🌊</div>
-                <h3>Ombak</h3>
-                <p>Gelombang data mengalir</p>
-            </div>
-            <div class="kartu">
-                <div class="icon">🔥</div>
-                <h3>Api Abadi</h3>
-                <p>Server tidak pernah padam</p>
-            </div>
-            <div class="kartu">
-                <div class="icon">🖤</div>
-                <h3>Deep Core</h3>
-                <p>Akses root penuh</p>
-            </div>
-            <div class="kartu">
-                <div class="icon">💀</div>
-                <h3>Mode Senyap</h3>
-                <p>Tanpa jejak, tanpa batas</p>
-            </div>
-            <div class="kartu">
-                <div class="icon">🔮</div>
-                <h3>Ramalan</h3>
-                <p>Prediksi real-time</p>
-            </div>
-            <div class="kartu">
-                <div class="icon">⚡</div>
-                <h3>Overdrive</h3>
-                <p>Kecepatan maksimal</p>
-            </div>
+            <div class="kartu"><div class="icon">🌊</div><h3>Ombak</h3><p>Gelombang data</p></div>
+            <div class="kartu"><div class="icon">🔥</div><h3>Api Abadi</h3><p>Server tak padam</p></div>
+            <div class="kartu"><div class="icon">🖤</div><h3>Deep Core</h3><p>Akses root penuh</p></div>
+            <div class="kartu"><div class="icon">💀</div><h3>Mode Senyap</h3><p>Tanpa jejak</p></div>
+            <div class="kartu"><div class="icon">🔮</div><h3>Ramalan</h3><p>Prediksi real-time</p></div>
+            <div class="kartu"><div class="icon">⚡</div><h3>Overdrive</h3><p>Kecepatan maks</p></div>
         </div>
 
+        <!-- TOMBOL INTERAKTIF -->
         <div class="tombol-area">
-            <button class="tombol" id="btnKirim">Kirim Sinyal</button>
-            <button class="tombol merah" id="btnHapus">Hapus Jejak</button>
-            <button class="tombol ungu" id="btnRamalan">Baca Ramalan</button>
-            <button class="tombol" id="btnUbahWarna">🌈 Ubah Warna</button>
+            <button class="tombol" id="btnKirim">📡 Kirim Sinyal</button>
+            <button class="tombol merah" id="btnHapus">💀 Hapus Jejak</button>
+            <button class="tombol ungu" id="btnRamalan">🔮 Baca Ramalan</button>
+            <button class="tombol" id="btnWarna">🌈 Ubah Warna</button>
+            <button class="tombol" id="btnLog">📜 Lihat Log</button>
         </div>
 
+        <!-- FITUR TAMBAHAN -->
+        <div class="fitur-tambahan">
+            <div class="fitur-card">
+                <h3>⏳ Hitung Mundur</h3>
+                <input type="number" id="countdownInput" placeholder="Detik..." value="10">
+                <button id="btnCountdown">Mulai</button>
+                <div id="countdownDisplay">0</div>
+            </div>
+            <div class="fitur-card">
+                <h3>💬 Live Chat (Simulasi)</h3>
+                <div id="chatBox"></div>
+                <input type="text" id="chatInput" placeholder="Pesan...">
+                <button id="btnChat">Kirim</button>
+            </div>
+        </div>
+
+        <!-- NOTIF -->
         <div id="notif">▼ Klik tombol untuk merasakan kedalaman ▼</div>
     </div>
 
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
