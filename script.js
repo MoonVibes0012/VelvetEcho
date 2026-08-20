@@ -1,9 +1,10 @@
 // ============================================================
-// PARTIKEL LAUT (CANVAS)
+// PARTIKEL LAUT (RINGAN + OPTIMAL)
 // ============================================================
 const canvas = document.getElementById('lautCanvas');
 const ctx = canvas.getContext('2d');
 let w, h;
+
 function resizeCanvas() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
@@ -12,17 +13,20 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 const partikel = [];
-const jumlah = 80;
+const jumlah = 35;  // dikurangi dari 80 → 35 biar ringan
+
 for (let i = 0; i < jumlah; i++) {
     partikel.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        r: Math.random() * 2 + 0.5,
-        dx: (Math.random() - 0.5) * 0.6,
-        dy: (Math.random() - 0.5) * 0.6,
-        warna: `hsla(${Math.random() * 60 + 170}, 80%, 60%, ${Math.random() * 0.4 + 0.1})`
+        r: Math.random() * 1.5 + 0.5,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        warna: `hsla(${Math.random() * 40 + 180}, 80%, 60%, ${Math.random() * 0.3 + 0.1})`
     });
 }
+
+let frameId = null;
 
 function animasiPartikel() {
     ctx.clearRect(0, 0, w, h);
@@ -35,69 +39,38 @@ function animasiPartikel() {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.warna;
         ctx.fill();
-        // garis antar partikel
-        for (let q of partikel) {
+    }
+    // Gambar garis antar partikel (opsional, dikurangi jarak)
+    for (let i = 0; i < partikel.length; i++) {
+        for (let j = i + 1; j < partikel.length; j++) {
+            const p = partikel[i];
+            const q = partikel[j];
             const dx = p.x - q.x;
             const dy = p.y - q.y;
             const jarak = Math.sqrt(dx*dx + dy*dy);
-            if (jarak < 120) {
+            if (jarak < 100) {
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
                 ctx.lineTo(q.x, q.y);
-                ctx.strokeStyle = `rgba(0,255,204,${0.08 * (1 - jarak/120)})`;
-                ctx.lineWidth = 0.6;
+                ctx.strokeStyle = `rgba(0,255,204,${0.05 * (1 - jarak/100)})`;
+                ctx.lineWidth = 0.5;
                 ctx.stroke();
             }
         }
     }
-    requestAnimationFrame(animasiPartikel);
+    frameId = requestAnimationFrame(animasiPartikel);
 }
+
 animasiPartikel();
 
-// ============================================================
-// JAM
-// ============================================================
-function updateJam() {
-    const now = new Date();
-    document.getElementById('jam').textContent =
-        String(now.getHours()).padStart(2,'0') + ':' +
-        String(now.getMinutes()).padStart(2,'0') + ':' +
-        String(now.getSeconds()).padStart(2,'0');
-}
-setInterval(updateJam, 1000);
-updateJam();
-
-// ============================================================
-// NOTIF
-// ============================================================
-function notif(pesan) {
-    const el = document.getElementById('notif');
-    el.textContent = '⚡ ' + pesan + ' ⚡';
-    el.style.transform = 'scale(1.02)';
-    setTimeout(() => el.style.transform = 'scale(1)', 150);
-}
-
-// ============================================================
-// API FETCH
-// ============================================================
-const API = 'http://localhost:3000/api';
-
-async function kirimSinyal() {
-    try {
-        const res = await fetch(API + '/sinyal', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ pesan: 'Sinyal dari Syntra' })
-        });
-        const data = await res.json();
-        notif('🌊 ' + data.message);
-    } catch { notif('❌ Server offline'); }
-}
-
-async function hapusJejak() {
-    try {
-        const res = await fetch(API + '/jejak', { method: 'DELETE' });
-        const data = await res.json();
+// Hentikan animasi saat tab tidak aktif (opsional)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        if (frameId) cancelAnimationFrame(frameId);
+    } else {
+        animasiPartikel();
+    }
+});        const data = await res.json();
         notif('💀 ' + data.message);
     } catch { notif('❌ Server offline'); }
 }
