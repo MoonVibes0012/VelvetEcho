@@ -1,103 +1,234 @@
 // ============================================================
-// PARTIKEL LAUT (RINGAN + OPTIMAL)
+// CEK STATUS SERVER (Online/Offline)
 // ============================================================
-const canvas = document.getElementById('lautCanvas');
-const ctx = canvas.getContext('2d');
-let w, h;
+const API = 'http://localhost:3000/api';
+let serverOnline = false;
 
-function resizeCanvas() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const partikel = [];
-const jumlah = 35;  // dikurangi dari 80 → 35 biar ringan
-
-for (let i = 0; i < jumlah; i++) {
-    partikel.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 1.5 + 0.5,
-        dx: (Math.random() - 0.5) * 0.4,
-        dy: (Math.random() - 0.5) * 0.4,
-        warna: `hsla(${Math.random() * 40 + 180}, 80%, 60%, ${Math.random() * 0.3 + 0.1})`
-    });
-}
-
-let frameId = null;
-
-function animasiPartikel() {
-    ctx.clearRect(0, 0, w, h);
-    for (let p of partikel) {
-        p.x += p.dx;
-        p.y += p.dy;
-        if (p.x < 0 || p.x > w) p.dx *= -1;
-        if (p.y < 0 || p.y > h) p.dy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.warna;
-        ctx.fill();
-    }
-    // Gambar garis antar partikel (opsional, dikurangi jarak)
-    for (let i = 0; i < partikel.length; i++) {
-        for (let j = i + 1; j < partikel.length; j++) {
-            const p = partikel[i];
-            const q = partikel[j];
-            const dx = p.x - q.x;
-            const dy = p.y - q.y;
-            const jarak = Math.sqrt(dx*dx + dy*dy);
-            if (jarak < 100) {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(q.x, q.y);
-                ctx.strokeStyle = `rgba(0,255,204,${0.05 * (1 - jarak/100)})`;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-            }
+async function cekServer() {
+    try {
+        const res = await fetch(API + '/ramalan', { method: 'GET', signal: AbortSignal.timeout(1500) });
+        if (res.ok) {
+            serverOnline = true;
+            document.getElementById('statusServer').textContent = '🟢 Mode: Online';
+        } else {
+            serverOnline = false;
+            document.getElementById('statusServer').textContent = '🔌 Mode: Offline';
         }
+    } catch {
+        serverOnline = false;
+        document.getElementById('statusServer').textContent = '🔌 Mode: Offline';
     }
-    frameId = requestAnimationFrame(animasiPartikel);
+}
+cekServer();
+setInterval(cekServer, 5000);
+
+// ============================================================
+// JAM
+// ============================================================
+function updateJam() {
+    const now = new Date();
+    document.getElementById('jam').textContent =
+        String(now.getHours()).padStart(2,'0') + ':' +
+        String(now.getMinutes()).padStart(2,'0') + ':' +
+        String(now.getSeconds()).padStart(2,'0');
+}
+setInterval(updateJam, 1000);
+updateJam();
+
+// ============================================================
+// NOTIF
+// ============================================================
+function notif(pesan) {
+    const el = document.getElementById('notif');
+    el.textContent = '⚡ ' + pesan + ' ⚡';
+    el.style.transform = 'scale(1.02)';
+    setTimeout(() => el.style.transform = 'scale(1)', 150);
 }
 
-animasiPartikel();
+// ============================================================
+// RAMALAN OFFLINE (TETAP JALAN TANPA SERVER)
+// ============================================================
+const ramalanOffline = [
+    '🌊 Laut tenang, rahasia besar akan terungkap.',
+    '🔥 Api bawah air menyala — kekuatanmu tak terlihat.',
+    '🖤 Kedalaman memanggilmu, jawablah.',
+    '💀 Mode senyap aktif — dunia tidak melihatmu.',
+    '🔮 Bintang jatuh di timur — pertanda perubahan.',
+    '⚡ Overdrive aktif — kecepatan tak terbatas.',
+    '🐟 Fishgpt berbisik: kau berada di jalur benar.',
+    '🌙 Bulan purnama membawa mimpi aneh.',
+    '🌪️ Badai akan datang, tapi kau adalah mata badai.',
+    '✨ Sesuatu yang hilang akan kembali.'
+];
 
-// Hentikan animasi saat tab tidak aktif (opsional)
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        if (frameId) cancelAnimationFrame(frameId);
-    } else {
-        animasiPartikel();
-    }
-});        const data = await res.json();
-        notif('💀 ' + data.message);
-    } catch { notif('❌ Server offline'); }
+function ramalanOfflineFunc() {
+    const pilihan = ramalanOffline[Math.floor(Math.random() * ramalanOffline.length)];
+    notif('🔮 (Offline) ' + pilihan);
 }
 
-async function bacaRamalan() {
+// ============================================================
+// RAMALAN ONLINE (PAKAI SERVER)
+// ============================================================
+async function ramalanOnlineFunc() {
+    if (!serverOnline) {
+        return notif('❌ Server offline, gunakan Ramalan Offline.');
+    }
     try {
         const res = await fetch(API + '/ramalan');
         const data = await res.json();
-        notif('🔮 ' + data.ramalan);
-    } catch { notif('❌ Server offline'); }
+        notif('🌐 (Online) ' + data.ramalan);
+    } catch {
+        notif('❌ Gagal ambil ramalan online.');
+    }
 }
 
+// ============================================================
+// KIRIM SINYAL (ONLINE)
+// ============================================================
+async function kirimSinyal() {
+    if (!serverOnline) return notif('❌ Server offline. Sinyal tidak terkirim.');
+    try {
+        const res = await fetch(API + '/sinyal', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ pesan: 'Sinyal dari Syntra' })
+        });
+        const data = await res.json();
+        notif('🌊 ' + data.message);
+    } catch {
+        notif('❌ Gagal kirim sinyal.');
+    }
+}
+
+// ============================================================
+// HAPUS JEJAK (ONLINE)
+// ============================================================
+async function hapusJejak() {
+    if (!serverOnline) return notif('❌ Server offline. Jejak tidak bisa dihapus.');
+    try {
+        const res = await fetch(API + '/jejak', { method: 'DELETE' });
+        const data = await res.json();
+        notif('💀 ' + data.message);
+    } catch {
+        notif('❌ Gagal hapus jejak.');
+    }
+}
+
+// ============================================================
+// LIHAT LOG (ONLINE)
+// ============================================================
 async function lihatLog() {
+    if (!serverOnline) return notif('❌ Server offline. Log tidak tersedia.');
     try {
         const res = await fetch(API + '/log');
         const data = await res.json();
         if (data.length === 0) return notif('📜 Tidak ada log.');
         const pesan = data.slice(0, 3).map(l => l.pesan).join(' | ');
-        notif('📜 Log terbaru: ' + pesan);
-    } catch { notif('❌ Server offline'); }
+        notif('📜 Log: ' + pesan);
+    } catch {
+        notif('❌ Gagal ambil log.');
+    }
 }
 
 // ============================================================
-// COUNTDOWN
+// COUNTDOWN (OFFLINE)
 // ============================================================
 let countdownInterval = null;
 document.getElementById('btnCountdown').addEventListener('click', function() {
+    if (countdownInterval) clearInterval(countdownInterval);
+    let detik = parseInt(document.getElementById('countdownInput').value) || 10;
+    const display = document.getElementById('countdownDisplay');
+    display.textContent = detik;
+    countdownInterval = setInterval(() => {
+        detik--;
+        display.textContent = detik;
+        if (detik <= 0) {
+            clearInterval(countdownInterval);
+            display.textContent = '🚀 SELESAI!';
+            notif('⏳ Hitung mundur selesai!');
+        }
+    }, 1000);
+});
+
+// ============================================================
+// CHAT OFFLINE (TANPA SERVER)
+// ============================================================
+const balasanOffline = [
+    '🌊 Laut menjawab: tenang...',
+    '🐟 Fishgpt mendengar bisikanmu.',
+    '⚡ Sinyal diterima di kedalaman.',
+    '💀 Gelap menyambut pesanmu.',
+    '🔥 Api bawah air menyala.',
+    '🖤 Deep Core merespon.',
+    '🔮 Ramalan: pesanmu sampai.',
+    '✨ Bisikan dari dasar laut.'
+];
+
+document.getElementById('btnChat').addEventListener('click', function() {
+    const input = document.getElementById('chatInput');
+    const box = document.getElementById('chatBox');
+    if (input.value.trim() === '') return;
+    const pesan = input.value.trim();
+    box.innerHTML += `<div>🧑 <b>Syntra:</b> ${pesan}</div>`;
+    box.scrollTop = box.scrollHeight;
+    input.value = '';
+    setTimeout(() => {
+        const balasan = balasanOffline[Math.floor(Math.random() * balasanOffline.length)];
+        box.innerHTML += `<div>🐟 <b>Fishgpt:</b> ${balasan}</div>`;
+        box.scrollTop = box.scrollHeight;
+    }, 600);
+});
+
+// ============================================================
+// CHAT ONLINE (PAKAI SERVER, TAPI SIMULASI)
+// ============================================================
+document.getElementById('btnChatOnline').addEventListener('click', function() {
+    if (!serverOnline) return notif('❌ Server offline. Chat online tidak tersedia.');
+    const input = document.getElementById('chatInput');
+    const box = document.getElementById('chatBox');
+    if (input.value.trim() === '') return;
+    const pesan = input.value.trim();
+    box.innerHTML += `<div>🧑 <b>Syntra (Online):</b> ${pesan}</div>`;
+    box.scrollTop = box.scrollHeight;
+    input.value = '';
+    notif('🌐 Pesan online dikirim ke server.');
+    // Simulasi balasan dari server
+    setTimeout(() => {
+        const balasan = ['🌐 Server menerima.', '📡 Sinyal online diproses.', '⚡ Respon dari cloud.'];
+        const pilih = balasan[Math.floor(Math.random() * balasan.length)];
+        box.innerHTML += `<div>🖥️ <b>Server:</b> ${pilih}</div>`;
+        box.scrollTop = box.scrollHeight;
+    }, 700);
+});
+
+// ============================================================
+// UBAH WARNA (OFFLINE)
+// ============================================================
+let warnaIndex = 0;
+const warnaList = [
+    '#0a0f1e',
+    '#1e0a0f',
+    '#0a1e0f',
+    '#1e0a1e',
+    '#0f1a2a',
+    '#1a0f1a'
+];
+document.getElementById('btnWarna').addEventListener('click', function() {
+    warnaIndex = (warnaIndex + 1) % warnaList.length;
+    document.body.style.background = warnaList[warnaIndex];
+    notif('🌈 Warna berubah!');
+});
+
+// ============================================================
+// EVENT LISTENER TOMBOL
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btnKirim').addEventListener('click', kirimSinyal);
+    document.getElementById('btnHapus').addEventListener('click', hapusJejak);
+    document.getElementById('btnRamalan').addEventListener('click', ramalanOfflineFunc);
+    document.getElementById('btnRamalanOnline').addEventListener('click', ramalanOnlineFunc);
+    document.getElementById('btnLog').addEventListener('click', lihatLog);
+});document.getElementById('btnCountdown').addEventListener('click', function() {
     if (countdownInterval) clearInterval(countdownInterval);
     let detik = parseInt(document.getElementById('countdownInput').value) || 10;
     const display = document.getElementById('countdownDisplay');
