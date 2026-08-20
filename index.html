@@ -3,42 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐟 Fishgpt — Lautan Ultra</title>
+    <title>🐟 Fishgpt — Offline/Online</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- KANVAS UNTUK PARTIKEL -->
-    <canvas id="lautCanvas"></canvas>
+    <!-- CAHAYA LATAR STATIS (tanpa canvas) -->
+    <div id="cahayaLatar"></div>
 
     <div class="container">
         <!-- HEADER -->
         <div class="header">
-            <h1>🐟 FISHGPT ULTRA</h1>
-            <div class="sub">⚡ SYNTERA — KEDALAMAN TAK TERBATAS ⚡</div>
+            <h1>🐟 FISHGPT LAUT</h1>
+            <div class="sub">⚡ OFFLINE / ONLINE — KEDALAMAN TAK TERBATAS ⚡</div>
         </div>
 
-        <!-- STATUS SERVER + JAM -->
+        <!-- STATUS BAR -->
         <div class="status-bar">
-            <span id="statusServer">🟢 Server: Online</span>
+            <span id="statusServer">🔌 Mode: Offline</span>
             <span id="jam">00:00:00</span>
         </div>
 
         <!-- GRID AKSESORIS -->
         <div class="grid">
             <div class="kartu"><div class="icon">🌊</div><h3>Ombak</h3><p>Gelombang data</p></div>
-            <div class="kartu"><div class="icon">🔥</div><h3>Api Abadi</h3><p>Server tak padam</p></div>
-            <div class="kartu"><div class="icon">🖤</div><h3>Deep Core</h3><p>Akses root penuh</p></div>
+            <div class="kartu"><div class="icon">🔥</div><h3>Api Abadi</h3><p>Tak padam</p></div>
+            <div class="kartu"><div class="icon">🖤</div><h3>Deep Core</h3><p>Akses root</p></div>
             <div class="kartu"><div class="icon">💀</div><h3>Mode Senyap</h3><p>Tanpa jejak</p></div>
-            <div class="kartu"><div class="icon">🔮</div><h3>Ramalan</h3><p>Prediksi real-time</p></div>
-            <div class="kartu"><div class="icon">⚡</div><h3>Overdrive</h3><p>Kecepatan maks</p></div>
+            <div class="kartu"><div class="icon">🔮</div><h3>Ramalan</h3><p>Offline/Online</p></div>
+            <div class="kartu"><div class="icon">⚡</div><h3>Overdrive</h3><p>Kecepatan</p></div>
         </div>
 
-        <!-- TOMBOL INTERAKTIF -->
+        <!-- TOMBOL -->
         <div class="tombol-area">
             <button class="tombol" id="btnKirim">📡 Kirim Sinyal</button>
             <button class="tombol merah" id="btnHapus">💀 Hapus Jejak</button>
-            <button class="tombol ungu" id="btnRamalan">🔮 Baca Ramalan</button>
+            <button class="tombol ungu" id="btnRamalan">🔮 Baca Ramalan (Offline)</button>
+            <button class="tombol" id="btnRamalanOnline">🌐 Ramalan Online</button>
             <button class="tombol" id="btnWarna">🌈 Ubah Warna</button>
             <button class="tombol" id="btnLog">📜 Lihat Log</button>
         </div>
@@ -52,10 +53,11 @@
                 <div id="countdownDisplay">0</div>
             </div>
             <div class="fitur-card">
-                <h3>💬 Live Chat (Simulasi)</h3>
+                <h3>💬 Chat Offline</h3>
                 <div id="chatBox"></div>
                 <input type="text" id="chatInput" placeholder="Pesan...">
                 <button id="btnChat">Kirim</button>
+                <button id="btnChatOnline" style="border-color:#a855f7;color:#a855f7;">🌐 Chat Online</button>
             </div>
         </div>
 
@@ -65,4 +67,4 @@
 
     <script src="script.js"></script>
 </body>
-    </html>
+</html>
