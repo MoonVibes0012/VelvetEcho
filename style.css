@@ -1,573 +1,730 @@
+/* ============================================================
+   RESET
+   ============================================================ */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    background: #0a0f1e;
-    color: #00ffcc;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    min-height: 100vh;
-    padding: 20px;
-    overflow-y: auto;
-    position: relative;
+:root {
+    --bg: #0a0f1e;
+    --bg-dark: #01040b;
+
+    --cyan: #00ffcc;
+    --blue: #0088ff;
+    --purple: #a855f7;
+
+    --text: #ffffff;
+    --text-soft: #88ddff;
+
+    --red: #ff4466;
+
+    --border: rgba(0, 255, 204, 0.10);
+    --surface: rgba(10, 20, 40, 0.78);
+
+    /*
+        Target desain ringan.
+        Browser tetap menentukan refresh rate sebenarnya.
+    */
+    --frame-time: 22.222ms;
 }
 
-/* ===== CAHAYA LATAR STATIS (tanpa animasi berat) ===== */
+/* ============================================================
+   BODY
+   ============================================================ */
+
+html {
+    min-height: 100%;
+    background: var(--bg);
+}
+
+body {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #0a0f1e,
+            #010101
+        );
+
+    color: var(--cyan);
+
+    font-family:
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+    padding: 20px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    position: relative;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeSpeed;
+}
+
+/* ============================================================
+   BACKGROUND
+   ============================================================ */
+
 #cahayaLatar {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+
+    inset: 0;
+
     z-index: 0;
-    background: radial-gradient(circle at 20% 30%, #00ffcc15, transparent 60%),
-                radial-gradient(circle at 80% 70%, #a855f715, transparent 60%),
-                radial-gradient(circle at 50% 50%, #0088ff10, transparent 80%);
+
     pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(0, 255, 204, 0.08),
+            transparent 60%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(168, 85, 247, 0.08),
+            transparent 60%
+        ),
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 136, 255, 0.06),
+            transparent 80%
+        );
 }
 
-/* ===== CONTAINER ===== */
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+
 .container {
     position: relative;
+
     z-index: 1;
-    max-width: 1100px;
+
     width: 100%;
+    max-width: 1100px;
+
     margin: 0 auto;
-    background: rgba(10, 20, 40, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 2px solid #00ffcc;
-    border-radius: 48px;
+
     padding: 28px 22px;
-    box-shadow: 0 0 60px rgba(0, 255, 204, 0.1);
-    animation: naik 0.5s ease-out;
+
+    background: var(--surface);
+
+    border: 2px solid var(--cyan);
+    border-radius: 42px;
+
+    box-shadow:
+        0 0 50px rgba(0, 255, 204, 0.08);
+
+    /*
+        Blur mahal pada beberapa HP.
+        Tetap digunakan tetapi tidak berlebihan.
+    */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    animation: containerMasuk 0.45s ease-out both;
 }
 
-@keyframes naik {
-    0% { opacity: 0; transform: translateY(30px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes containerMasuk {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* ===== HEADER ===== */
+/* ============================================================
+   HEADER
+   ============================================================ */
+
 .header {
     text-align: center;
+
     margin-bottom: 16px;
-    border-bottom: 1px solid rgba(0, 255, 204, 0.08);
-    padding-bottom: 12px;
+    padding-bottom: 14px;
+
+    border-bottom:
+        1px solid rgba(0, 255, 204, 0.08);
 }
+
 .header h1 {
     font-size: 2.4rem;
     font-weight: 900;
-    background: linear-gradient(135deg, #00ffcc, #0088ff, #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
     letter-spacing: 1px;
+    line-height: 1.15;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--blue),
+            var(--purple)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
 }
+
 .header .sub {
-    color: #88ddff;
-    opacity: 0.5;
-    letter-spacing: 4px;
+    margin-top: 7px;
+
+    color: var(--text-soft);
+
+    opacity: 0.55;
+
+    letter-spacing: 3px;
+
     font-size: 0.75rem;
 }
 
-/* ===== STATUS BAR ===== */
+/* ============================================================
+   STATUS BAR
+   ============================================================ */
+
 .status-bar {
     display: flex;
+
+    align-items: center;
     justify-content: space-between;
-    font-size: 0.8rem;
-    background: rgba(0, 255, 204, 0.03);
-    border-radius: 60px;
-    padding: 6px 18px;
-    border: 1px solid rgba(0, 255, 204, 0.06);
+
+    gap: 10px;
+
+    padding: 7px 18px;
+
     margin-bottom: 14px;
-    color: #88ddff;
-}
-#statusServer {
-    animation: kedip 3s infinite;
-}
-@keyframes kedip {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+
+    border:
+        1px solid rgba(0, 255, 204, 0.07);
+
+    border-radius: 60px;
+
+    background:
+        rgba(0, 255, 204, 0.025);
+
+    color: var(--text-soft);
+
+    font-size: 0.8rem;
 }
 
-/* ===== GRID ===== */
+#statusServer {
+    animation: kedip 3s ease-in-out infinite;
+}
+
+@keyframes kedip {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+}
+
+/* ============================================================
+   GRID
+   ============================================================ */
+
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 10px;
-    margin: 14px 0;
-}
-.kartu {
-    background: rgba(0, 255, 204, 0.02);
-    border: 1px solid rgba(0, 255, 204, 0.06);
-    border-radius: 20px;
-    padding: 12px 6px;
-    text-align: center;
-    transition: 0.2s;
-}
-.kartu:hover {
-    transform: translateY(-3px);
-    border-color: #00ffcc;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.05);
-}
-.kartu .icon { font-size: 1.8rem; }
-.kartu h3 { color: #fff; font-size: 0.8rem; }
-.kartu p { font-size: 0.6rem; opacity: 0.4; }
 
-/* ===== TOMBOL ===== */
-.tombol-area {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin: 14px 0;
-}
-.tombol {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-    padding: 8px 16px;
-    border-radius: 60px;
-    font-weight: 700;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: 0.2s;
-    background: rgba(0, 255, 204, 0.02);
-}
-.tombol:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-    box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
-    transform: scale(1.03);
-}
-.tombol.merah { border-color: #ff4466; color: #ff4466; }
-.tombol.merah:hover { background: #ff4466; color: #0a0f1e; }
-.tombol.ungu { border-color: #a855f7; color: #a855f7; }
-.tombol.ungu:hover { background: #a855f7; color: #0a0f1e; }
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
 
-/* ===== FITUR TAMBAHAN ===== */
-.fitur-tambahan {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 14px;
-    margin: 14px 0;
-}
-.fitur-card {
-    background: rgba(0, 255, 204, 0.02);
-    border: 1px solid rgba(0, 255, 204, 0.06);
-    border-radius: 20px;
-    padding: 12px 10px;
-    text-align: center;
-}
-.fitur-card h3 {
-    color: #88ddff;
-    font-size: 0.85rem;
-    margin-bottom: 4px;
-}
-.fitur-card input, .fitur-card button {
-    padding: 5px 10px;
-    border-radius: 40px;
-    border: 1px solid #00ffcc;
-    background: rgba(0, 0, 0, 0.4);
-    color: #00ffcc;
-    font-size: 0.75rem;
-    margin: 2px;
-}
-.fitur-card button {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    cursor: pointer;
-    font-weight: 700;
-}
-.fitur-card button:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-}
-#countdownDisplay {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-top: 4px;
-    color: #00ffcc;
-}
-#chatBox {
-    height: 50px;
-    overflow-y: auto;
-    font-size: 0.7rem;
-    color: #bbf0ff;
-    border-bottom: 1px solid rgba(0, 255, 204, 0.06);
-    margin-bottom: 4px;
-    text-align: left;
-    padding: 2px 6px;
-}
 
-/* ===== NOTIF ===== */
-#notif {
-    text-align: center;
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(0, 255, 204, 0.06);
-    color: #88ddff;
-    font-size: 0.75rem;
-    min-height: 2rem;
-}
-
-/* ===== RESPONSIF ===== */
-@media (max-width: 700px) {
-    .fitur-tambahan { grid-template-columns: 1fr; }
-    .header h1 { font-size: 1.8rem; }
-    .grid { grid-template-columns: repeat(3, 1fr); }
-                    }    margin: 16px 0;
+    margin: 16px 0;
 }
 
 .kartu {
-    background: rgba(0, 255, 204, 0.03);
-    border: 1px solid rgba(0, 255, 204, 0.08);
-    border-radius: 24px;
-    padding: 14px 8px;
+    min-width: 0;
+
+    padding: 18px 10px;
+
     text-align: center;
-    transition: 0.2s;
+
+    background:
+        rgba(0, 255, 204, 0.025);
+
+    border:
+        1px solid rgba(0, 255, 204, 0.09);
+
+    border-radius: 24px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
 .kartu:hover {
     transform: translateY(-4px);
-    border-color: #00ffcc;
-    box-shadow: 0 0 30px rgba(0, 255, 204, 0.08);
-}
-.kartu .icon { font-size: 2rem; }
-.kartu h3 { color: #fff; font-size: 0.85rem; }
-.kartu p { font-size: 0.65rem; opacity: 0.5; }
 
-/* ===== TOMBOL ===== */
-.tombol-area {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 16px 0;
-}
+    border-color: var(--cyan);
 
-.tombol {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-    padding: 10px 20px;
-    border-radius: 60px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: 0.2s;
-    background: rgba(0, 255, 204, 0.02);
-    flex: 0 1 auto;
-}
-.tombol:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-    box-shadow: 0 0 40px rgba(0, 255, 204, 0.3);
-    transform: scale(1.03);
-}
-.tombol.merah { border-color: #ff4466; color: #ff4466; }
-.tombol.merah:hover { background: #ff4466; color: #0a0f1e; }
-.tombol.ungu { border-color: #a855f7; color: #a855f7; }
-.tombol.ungu:hover { background: #a855f7; color: #0a0f1e; }
-
-/* ===== FITUR TAMBAHAN ===== */
-.fitur-tambahan {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin: 16px 0;
-}
-
-.fitur-card {
-    background: rgba(0, 255, 204, 0.02);
-    border: 1px solid rgba(0, 255, 204, 0.06);
-    border-radius: 24px;
-    padding: 14px 12px;
-    text-align: center;
-}
-.fitur-card h3 {
-    color: #88ddff;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
-}
-.fitur-card input, .fitur-card button {
-    padding: 6px 12px;
-    border-radius: 40px;
-    border: 1px solid #00ffcc;
-    background: rgba(0, 0, 0, 0.4);
-    color: #00ffcc;
-    font-size: 0.8rem;
-    margin: 3px;
-}
-.fitur-card button {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    cursor: pointer;
-    font-weight: 700;
-}
-.fitur-card button:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-}
-#countdownDisplay {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-top: 4px;
-    color: #00ffcc;
-}
-#chatBox {
-    height: 50px;
-    overflow-y: auto;
-    font-size: 0.75rem;
-    color: #bbf0ff;
-    border-bottom: 1px solid rgba(0, 255, 204, 0.06);
-    margin-bottom: 4px;
-    text-align: left;
-    padding: 2px 6px;
-}
-
-/* ===== NOTIF ===== */
-#notif {
-    text-align: center;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(0, 255, 204, 0.06);
-    color: #88ddff;
-    font-size: 0.8rem;
-    min-height: 2rem;
-}
-
-/* ===== RESPONSIF ===== */
-@media (max-width: 700px) {
-    .fitur-tambahan { grid-template-columns: 1fr; }
-    .header h1 { font-size: 2rem; }
-    .grid { grid-template-columns: repeat(3, 1fr); }
-        }@keyframes kedip {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-/* ===== GRID ===== */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
-    margin: 20px 0;
-}
-
-.kartu {
-    background: rgba(0, 255, 204, 0.04);
-    border: 1px solid rgba(0, 255, 204, 0.12);
-    border-radius: 28px;
-    padding: 18px 12px;
-    text-align: center;
-    transition: 0.3s;
-    backdrop-filter: blur(4px);
-}
-.kartu:hover {
-    transform: translateY(-6px) scale(1.02);
-    border-color: #00ffcc;
-    box-shadow: 0 0 40px rgba(0, 255, 204, 0.15);
-}
-.kartu .icon { font-size: 2.6rem; }
-.kartu h3 { color: #fff; font-size: 1rem; }
-.kartu p { font-size: 0.75rem; opacity: 0.6; }
-
-/* ===== TOMBOL ===== */
-.tombol-area {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin: 20px 0;
-}
-
-.tombol {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-    padding: 12px 28px;
-    border-radius: 60px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.25s;
-    backdrop-filter: blur(4px);
-    background: rgba(0, 255, 204, 0.03);
-}
-.tombol:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-    box-shadow: 0 0 50px rgba(0, 255, 204, 0.5);
-    transform: scale(1.04);
-}
-.tombol.merah { border-color: #ff4466; color: #ff4466; }
-.tombol.merah:hover { background: #ff4466; color: #0a0f1e; box-shadow: 0 0 50px rgba(255, 68, 102, 0.5); }
-.tombol.ungu { border-color: #a855f7; color: #a855f7; }
-.tombol.ungu:hover { background: #a855f7; color: #0a0f1e; box-shadow: 0 0 50px rgba(168, 85, 247, 0.5); }
-
-/* ===== FITUR TAMBAHAN ===== */
-.fitur-tambahan {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin: 20px 0;
-}
-
-.fitur-card {
-    background: rgba(0, 255, 204, 0.03);
-    border: 1px solid rgba(0, 255, 204, 0.1);
-    border-radius: 28px;
-    padding: 18px 16px;
-    text-align: center;
-}
-.fitur-card h3 {
-    color: #88ddff;
-    font-size: 1rem;
-    margin-bottom: 8px;
-}
-.fitur-card input, .fitur-card button {
-    padding: 8px 14px;
-    border-radius: 40px;
-    border: 1px solid #00ffcc;
-    background: rgba(0, 0, 0, 0.5);
-    color: #00ffcc;
-    font-size: 0.9rem;
-    margin: 4px;
-}
-.fitur-card button {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    cursor: pointer;
-    font-weight: 700;
-    transition: 0.2s;
-}
-.fitur-card button:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-}
-#countdownDisplay {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-top: 8px;
-    color: #00ffcc;
-}
-#chatBox {
-    height: 60px;
-    overflow-y: auto;
-    font-size: 0.85rem;
-    color: #bbf0ff;
-    border-bottom: 1px solid rgba(0, 255, 204, 0.1);
-    margin-bottom: 6px;
-    text-align: left;
-    padding: 4px 8px;
-}
-
-/* ===== NOTIF ===== */
-#notif {
-    text-align: center;
-    margin-top: 18px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(0, 255, 204, 0.08);
-    color: #88ddff;
-    font-size: 0.9rem;
-}
-
-/* ===== RESPONSIF ===== */
-@media (max-width: 700px) {
-    .fitur-tambahan { grid-template-columns: 1fr; }
-    .header h1 { font-size: 2.4rem; }
-}    transform: translateY(-8px) scale(1.02);
-    border-color: #00ffcc;
-    box-shadow: 0 12px 40px rgba(0, 255, 204, 0.2);
-    background: rgba(0, 255, 204, 0.08);
+    box-shadow:
+        0 0 28px rgba(0, 255, 204, 0.10);
 }
 
 .kartu .icon {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-.kartu h3 {
-    color: #fff;
-    font-size: 1.2rem;
-    margin-bottom: 6px;
-}
-.kartu p {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    color: #bbf0ff;
+    font-size: 2.4rem;
+
+    margin-bottom: 7px;
 }
 
-/* ===== TOMBOL ===== */
+.kartu h3 {
+    color: var(--text);
+
+    font-size: 0.95rem;
+
+    margin-bottom: 4px;
+}
+
+.kartu p {
+    color: #bbf0ff;
+
+    font-size: 0.7rem;
+
+    opacity: 0.55;
+}
+
+/* ============================================================
+   BUTTON AREA
+   ============================================================ */
+
 .tombol-area {
     display: flex;
+
     flex-wrap: wrap;
+
     justify-content: center;
-    gap: 16px;
-    margin: 30px 0 20px;
+
+    gap: 10px;
+
+    margin: 20px 0;
 }
 
 .tombol {
-    background: transparent;
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-    padding: 14px 32px;
+    appearance: none;
+
+    border:
+        2px solid var(--cyan);
+
     border-radius: 60px;
-    font-size: 1rem;
+
+    padding: 11px 20px;
+
+    color: var(--cyan);
+
+    background:
+        rgba(0, 255, 204, 0.025);
+
+    font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 1px;
+
     cursor: pointer;
-    transition: 0.25s;
-    backdrop-filter: blur(4px);
-    background: rgba(0, 255, 204, 0.03);
-    flex: 0 1 auto;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 .tombol:hover {
-    background: #00ffcc;
-    color: #0a0f1e;
-    box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
-    transform: scale(1.05);
+    background: var(--cyan);
+
+    color: var(--bg);
+
+    box-shadow:
+        0 0 30px rgba(0, 255, 204, 0.25);
+
+    transform: scale(1.025);
+}
+
+.tombol:active {
+    transform: scale(0.97);
+}
+
+.tombol:focus-visible {
+    outline:
+        2px solid white;
+
+    outline-offset: 3px;
 }
 
 .tombol.merah {
-    border-color: #ff4466;
-    color: #ff4466;
+    border-color: var(--red);
+    color: var(--red);
 }
+
 .tombol.merah:hover {
-    background: #ff4466;
-    color: #0a0f1e;
-    box-shadow: 0 0 40px rgba(255, 68, 102, 0.6);
+    background: var(--red);
+    color: var(--bg);
 }
 
 .tombol.ungu {
-    border-color: #a855f7;
-    color: #a855f7;
+    border-color: var(--purple);
+    color: var(--purple);
 }
+
 .tombol.ungu:hover {
-    background: #a855f7;
-    color: #0a0f1e;
-    box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+    background: var(--purple);
+    color: var(--bg);
 }
 
-/* ===== NOTIF ===== */
-#notif {
+/* ============================================================
+   FITUR TAMBAHAN
+   ============================================================ */
+
+.fitur-tambahan {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin: 18px 0;
+}
+
+.fitur-card {
+    min-width: 0;
+
+    padding: 18px 14px;
+
     text-align: center;
-    margin-top: 20px;
-    font-size: 1rem;
-    color: #88ddff;
-    min-height: 2rem;
-    transition: 0.3s;
-    border-top: 1px solid rgba(0, 255, 204, 0.1);
-    padding-top: 20px;
+
+    background:
+        rgba(0, 255, 204, 0.025);
+
+    border:
+        1px solid rgba(0, 255, 204, 0.09);
+
+    border-radius: 24px;
 }
 
-/* ===== RESPONSIF ===== */
+.fitur-card h3 {
+    color: var(--text-soft);
+
+    font-size: 0.95rem;
+
+    margin-bottom: 10px;
+}
+
+/* ============================================================
+   INPUT
+   ============================================================ */
+
+.fitur-card input {
+    min-width: 0;
+
+    padding: 8px 12px;
+
+    border:
+        1px solid var(--cyan);
+
+    border-radius: 40px;
+
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    color: var(--cyan);
+
+    font-family: inherit;
+    font-size: 0.8rem;
+
+    outline: none;
+}
+
+.fitur-card input:focus {
+    box-shadow:
+        0 0 12px rgba(0, 255, 204, 0.15);
+}
+
+.fitur-card input::placeholder {
+    color: #88ddff;
+    opacity: 0.5;
+}
+
+/* ============================================================
+   INPUT ROW
+   ============================================================ */
+
+.input-row {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+}
+
+/* ============================================================
+   SMALL BUTTON
+   ============================================================ */
+
+.fitur-card button {
+    appearance: none;
+
+    padding: 8px 14px;
+
+    border:
+        2px solid var(--cyan);
+
+    border-radius: 40px;
+
+    background: transparent;
+
+    color: var(--cyan);
+
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.fitur-card button:hover {
+    background: var(--cyan);
+    color: var(--bg);
+}
+
+.fitur-card button:active {
+    transform: scale(0.96);
+}
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+
+#countdownDisplay {
+    min-height: 42px;
+
+    margin-top: 8px;
+
+    color: var(--cyan);
+
+    font-size: 1.8rem;
+    font-weight: 800;
+
+    line-height: 42px;
+}
+
+/* ============================================================
+   CHAT
+   ============================================================ */
+
+#chatBox {
+    width: 100%;
+    height: 100px;
+
+    overflow-y: auto;
+
+    margin-bottom: 8px;
+
+    padding: 6px 8px;
+
+    text-align: left;
+
+    color: #bbf0ff;
+
+    font-size: 0.75rem;
+
+    border-bottom:
+        1px solid rgba(0, 255, 204, 0.08);
+
+    scrollbar-width: thin;
+}
+
+#chatBox div {
+    margin-bottom: 4px;
+
+    overflow-wrap: anywhere;
+}
+
+.chat-input-row {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 4px;
+
+    width: 100%;
+}
+
+.chat-input-row input {
+    flex: 1;
+
+    width: 0;
+}
+
+.online-button {
+    margin-top: 7px;
+
+    border-color: var(--purple) !important;
+
+    color: var(--purple) !important;
+}
+
+.online-button:hover {
+    background: var(--purple) !important;
+    color: var(--bg) !important;
+}
+
+/* ============================================================
+   NOTIFIKASI
+   ============================================================ */
+
+#notif {
+    min-height: 2rem;
+
+    margin-top: 18px;
+    padding-top: 14px;
+
+    border-top:
+        1px solid rgba(0, 255, 204, 0.08);
+
+    text-align: center;
+
+    color: var(--text-soft);
+
+    font-size: 0.8rem;
+
+    transition:
+        transform 0.15s ease;
+}
+
+/* ============================================================
+   RESPONSIVE TABLET
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    body {
+        padding: 14px;
+    }
+
+    .container {
+        padding: 22px 16px;
+
+        border-radius: 32px;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .grid {
+        gap: 10px;
+    }
+
+    .kartu {
+        padding: 15px 7px;
+    }
+
+    .kartu .icon {
+        font-size: 2rem;
+    }
+
+    .tombol {
+        padding: 10px 16px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE HP
+   ============================================================ */
+
 @media (max-width: 600px) {
-    .container { padding: 24px 16px; }
-    .header h1 { font-size: 2.2rem; }
-    .jam { font-size: 1.8rem; }
-    .grid { grid-template-columns: 1fr 1fr; }
-    .tombol { width: 100%; }
-  }
+
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 20px 12px;
+
+        border-radius: 26px;
+    }
+
+    .header h1 {
+        font-size: 1.7rem;
+    }
+
+    .header .sub {
+        font-size: 0.58rem;
+        letter-spacing: 2px;
+    }
+
+    .status-bar {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+
+    .grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 9px;
+    }
+
+    .fitur-tambahan {
+        grid-template-columns: 1fr;
+    }
+
+    .tombol-area {
+        gap: 8px;
+    }
+
+    .tombol {
+        width: 100%;
+    }
+
+    .fitur-card {
+        padding: 15px 10px;
+    }
+}
+
+/* ============================================================
+   REDUCE MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
