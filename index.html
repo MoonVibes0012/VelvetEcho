@@ -3,68 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0f1e">
+    <meta name="description" content="Fishgpt — Offline / Online">
     <title>🐟 Fishgpt — Offline/Online</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- CAHAYA LATAR STATIS (tanpa canvas) -->
-    <div id="cahayaLatar"></div>
+    <!-- CAHAYA LATAR -->
+    <div id="cahayaLatar" aria-hidden="true"></div>
 
-    <div class="container">
+    <main class="container">
+
         <!-- HEADER -->
-        <div class="header">
+        <header class="header">
             <h1>🐟 FISHGPT LAUT</h1>
-            <div class="sub">⚡ OFFLINE / ONLINE — KEDALAMAN TAK TERBATAS ⚡</div>
-        </div>
+            <div class="sub">
+                ⚡ OFFLINE / ONLINE — KEDALAMAN TAK TERBATAS ⚡
+            </div>
+        </header>
 
-        <!-- STATUS BAR -->
-        <div class="status-bar">
+        <!-- STATUS -->
+        <section class="status-bar" aria-label="Status">
             <span id="statusServer">🔌 Mode: Offline</span>
             <span id="jam">00:00:00</span>
-        </div>
+        </section>
 
         <!-- GRID AKSESORIS -->
-        <div class="grid">
-            <div class="kartu"><div class="icon">🌊</div><h3>Ombak</h3><p>Gelombang data</p></div>
-            <div class="kartu"><div class="icon">🔥</div><h3>Api Abadi</h3><p>Tak padam</p></div>
-            <div class="kartu"><div class="icon">🖤</div><h3>Deep Core</h3><p>Akses root</p></div>
-            <div class="kartu"><div class="icon">💀</div><h3>Mode Senyap</h3><p>Tanpa jejak</p></div>
-            <div class="kartu"><div class="icon">🔮</div><h3>Ramalan</h3><p>Offline/Online</p></div>
-            <div class="kartu"><div class="icon">⚡</div><h3>Overdrive</h3><p>Kecepatan</p></div>
-        </div>
+        <section class="grid" aria-label="Fitur Fishgpt">
+
+            <article class="kartu">
+                <div class="icon">🌊</div>
+                <h3>Ombak</h3>
+                <p>Gelombang data</p>
+            </article>
+
+            <article class="kartu">
+                <div class="icon">🔥</div>
+                <h3>Api Abadi</h3>
+                <p>Tak padam</p>
+            </article>
+
+            <article class="kartu">
+                <div class="icon">🖤</div>
+                <h3>Deep Core</h3>
+                <p>Akses root</p>
+            </article>
+
+            <article class="kartu">
+                <div class="icon">💀</div>
+                <h3>Mode Senyap</h3>
+                <p>Tanpa jejak</p>
+            </article>
+
+            <article class="kartu">
+                <div class="icon">🔮</div>
+                <h3>Ramalan</h3>
+                <p>Offline/Online</p>
+            </article>
+
+            <article class="kartu">
+                <div class="icon">⚡</div>
+                <h3>Overdrive</h3>
+                <p>Kecepatan</p>
+            </article>
+
+        </section>
 
         <!-- TOMBOL -->
-        <div class="tombol-area">
-            <button class="tombol" id="btnKirim">📡 Kirim Sinyal</button>
-            <button class="tombol merah" id="btnHapus">💀 Hapus Jejak</button>
-            <button class="tombol ungu" id="btnRamalan">🔮 Baca Ramalan (Offline)</button>
-            <button class="tombol" id="btnRamalanOnline">🌐 Ramalan Online</button>
-            <button class="tombol" id="btnWarna">🌈 Ubah Warna</button>
-            <button class="tombol" id="btnLog">📜 Lihat Log</button>
-        </div>
+        <section class="tombol-area">
+
+            <button class="tombol" id="btnKirim" type="button">
+                📡 Kirim Sinyal
+            </button>
+
+            <button class="tombol merah" id="btnHapus" type="button">
+                💀 Hapus Jejak
+            </button>
+
+            <button class="tombol ungu" id="btnRamalan" type="button">
+                🔮 Baca Ramalan (Offline)
+            </button>
+
+            <button class="tombol" id="btnRamalanOnline" type="button">
+                🌐 Ramalan Online
+            </button>
+
+            <button class="tombol" id="btnWarna" type="button">
+                🌈 Ubah Warna
+            </button>
+
+            <button class="tombol" id="btnLog" type="button">
+                📜 Lihat Log
+            </button>
+
+        </section>
 
         <!-- FITUR TAMBAHAN -->
-        <div class="fitur-tambahan">
-            <div class="fitur-card">
+        <section class="fitur-tambahan">
+
+            <!-- COUNTDOWN -->
+            <article class="fitur-card">
+
                 <h3>⏳ Hitung Mundur</h3>
-                <input type="number" id="countdownInput" placeholder="Detik..." value="10">
-                <button id="btnCountdown">Mulai</button>
+
+                <div class="input-row">
+                    <input
+                        type="number"
+                        id="countdownInput"
+                        placeholder="Detik..."
+                        value="10"
+                        min="1"
+                        max="86400"
+                        inputmode="numeric"
+                    >
+
+                    <button id="btnCountdown" type="button">
+                        Mulai
+                    </button>
+                </div>
+
                 <div id="countdownDisplay">0</div>
-            </div>
-            <div class="fitur-card">
+
+            </article>
+
+            <!-- CHAT -->
+            <article class="fitur-card">
+
                 <h3>💬 Chat Offline</h3>
-                <div id="chatBox"></div>
-                <input type="text" id="chatInput" placeholder="Pesan...">
-                <button id="btnChat">Kirim</button>
-                <button id="btnChatOnline" style="border-color:#a855f7;color:#a855f7;">🌐 Chat Online</button>
-            </div>
+
+                <div
+                    id="chatBox"
+                    role="log"
+                    aria-live="polite"
+                    aria-label="Chat"
+                ></div>
+
+                <div class="chat-input-row">
+
+                    <input
+                        type="text"
+                        id="chatInput"
+                        placeholder="Pesan..."
+                        maxlength="1000"
+                        autocomplete="off"
+                    >
+
+                    <button id="btnChat" type="button">
+                        Kirim
+                    </button>
+
+                </div>
+
+                <button
+                    id="btnChatOnline"
+                    class="online-button"
+                    type="button"
+                >
+                    🌐 Chat Online
+                </button>
+
+            </article>
+
+        </section>
+
+        <!-- NOTIFIKASI -->
+        <div id="notif" role="status" aria-live="polite">
+            ▼ Klik tombol untuk merasakan kedalaman ▼
         </div>
 
-        <!-- NOTIF -->
-        <div id="notif">▼ Klik tombol untuk merasakan kedalaman ▼</div>
-    </div>
+    </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+
 </body>
-</html>
+                        </html>
