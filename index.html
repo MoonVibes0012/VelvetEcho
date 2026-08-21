@@ -24,7 +24,6 @@
       position: relative;
     }
 
-    /* Cahaya atas */
     body::before {
       content: '';
       position: absolute;
@@ -38,7 +37,6 @@
       z-index: 0;
     }
 
-    /* Vignette */
     body::after {
       content: '';
       position: absolute;
@@ -48,7 +46,6 @@
       z-index: 3;
     }
 
-    /* Cahaya bergerak pelan */
     .light-ray {
       position: absolute;
       width: 200px;
@@ -107,7 +104,6 @@
       100% { transform: translate3d(calc(100vw + 70px), 0, 0); }
     }
 
-    /* Partikel kecil mengambang */
     .particle {
       position: absolute;
       width: 2px;
@@ -150,15 +146,21 @@
       height: 340px;
       min-height: 340px;
       max-height: 340px;
-      background: rgba(8, 28, 48, 0.62);
       border: 1px solid rgba(128, 222, 234, 0.2);
       border-radius: 18px;
       padding: 18px;
       overflow-y: auto;
       margin: 20px 0;
-      backdrop-filter: blur(10px);
       box-shadow: 0 10px 36px rgba(0, 0, 0, 0.4);
       position: relative;
+
+      /* Gambar custom + overlay gelap biar samar */
+      background-image: 
+        linear-gradient(rgba(8, 28, 48, 0.84), rgba(8, 28, 48, 0.84)),
+        url('Screenshot_20260821-130756_Brave.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     #chat:empty::before {
@@ -241,7 +243,6 @@
 </head>
 <body>
 
-  <!-- Cahaya bergerak -->
   <div class="light-ray" style="top: 20%; left: 15%;"></div>
   <div class="light-ray" style="top: 55%; left: 70%; animation-delay: -6s;"></div>
 
@@ -323,12 +324,10 @@
     const input = document.getElementById('input');
     const btn = document.getElementById('btnKirim');
 
-    // Daftar jawaban
     const jawabanNormal = 'me fishgpt';
     const jawabanSpesial = "i'm gpt by VelvetEcho ON MoonVibes";
 
     function pilihJawaban() {
-      // Kira-kira 1 dari 6 kali muncul yang spesial
       return Math.random() < 0.17 ? jawabanSpesial : jawabanNormal;
     }
 
@@ -383,4 +382,4 @@
     buatPartikel();
   </script>
 </body>
-  </html>
+</html>
