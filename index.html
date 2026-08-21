@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>me fishgpt</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Quicksand', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #020b18 0%, #041428 45%, #0a2a4a 100%);
+      color: #e0f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Cahaya atas */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      width: 110%;
+      height: 45%;
+      background: radial-gradient(ellipse, rgba(100, 200, 255, 0.07) 0%, transparent 70%);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Vignette */
+    body::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Cahaya bergerak pelan */
+    .light-ray {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(128, 222, 234, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: drift 18s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes drift {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(40px, 30px); }
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      height: 100%;
+      max-height: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      animation: naik linear infinite;
+      will-change: transform, opacity;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes naik {
+      0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.3; }
+      100% { transform: translate3d(0, -110vh, 0) scale(1.5); opacity: 0; }
+    }
+
+    .fish {
+      position: absolute;
+      opacity: 0.15;
+      animation: renang linear infinite;
+      will-change: transform;
+      pointer-events: none;
+      z-index: 2;
+      font-size: 20px;
+    }
+    @keyframes renang {
+      0%   { transform: translate3d(-70px, 0, 0); }
+      100% { transform: translate3d(calc(100vw + 70px), 0, 0); }
+    }
+
+    /* Partikel kecil mengambang */
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(128, 222, 234, 0.4);
+      border-radius: 50%;
+      animation: float linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes float {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      20%  { opacity: 0.6; }
+      80%  { opacity: 0.6; }
+      100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #80deea;
+      text-shadow: 0 0 14px rgba(128, 222, 234, 0.55);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 2px;
+      margin: 10px auto 0;
+      background: linear-gradient(90deg, transparent, #80deea, transparent);
+      opacity: 0.6;
+    }
+
+    #chat {
+      width: 100%;
+      height: 340px;
+      min-height: 340px;
+      max-height: 340px;
+      background: rgba(8, 28, 48, 0.62);
+      border: 1px solid rgba(128, 222, 234, 0.2);
+      border-radius: 18px;
+      padding: 18px;
+      overflow-y: auto;
+      margin: 20px 0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    #chat:empty::before {
+      content: 'Kedalaman menunggu bisikanmu...';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(128, 222, 234, 0.35);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .msg {
+      margin-bottom: 14px;
+      line-height: 1.5;
+      max-width: 85%;
+    }
+
+    .user {
+      color: #90caf9;
+      margin-left: auto;
+      text-align: right;
+      animation: slideIn 0.35s ease forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translate3d(20px, 0, 0); }
+      to   { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    .bot {
+      color: #80deea;
+      text-shadow: 0 0 8px rgba(128, 222, 234, 0.4);
+    }
+
+    .bot.special {
+      color: #f0abfc;
+      text-shadow: 0 0 10px rgba(240, 171, 252, 0.5);
+    }
+
+    .input-area {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 14px 16px;
+      border: 1px solid rgba(128, 222, 234, 0.25);
+      border-radius: 12px;
+      background: rgba(10, 35, 55, 0.7);
+      color: #e0f7fa;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+    }
+    input:focus {
+      border-color: #80deea;
+      box-shadow: 0 0 0 3px rgba(128, 222, 234, 0.12);
+    }
+    input::placeholder {
+      color: rgba(128, 222, 234, 0.4);
+    }
+
+    button {
+      padding: 14px 22px;
+      background: linear-gradient(135deg, #006064, #00acc1);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+  <!-- Cahaya bergerak -->
+  <div class="light-ray" style="top: 20%; left: 15%;"></div>
+  <div class="light-ray" style="top: 55%; left: 70%; animation-delay: -6s;"></div>
+
+  <div class="app">
+    <h1>me fishgpt</h1>
+    <div id="chat"></div>
+
+    <div class="input-area">
+      <input type="text" id="input" placeholder="Bisikkan sesuatu ke kedalaman..." autocomplete="off">
+      <button id="btnKirim">Kirim</button>
+    </div>
+  </div>
+
+  <script>
+    let audioCtx;
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    function mainkanSuaraKetik() {
+      if (!audioCtx || audioCtx.state === 'suspended') return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = 700 + Math.random() * 80;
+      osc.type = 'triangle';
+      gain.gain.value = 0.03;
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
+
+    function buatGelembung() {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 11; i++) {
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const size = 6 + Math.random() * 10;
+        b.style.width = size + 'px';
+        b.style.height = size + 'px';
+        b.style.left = Math.random() * 100 + '%';
+        b.style.animationDuration = (11 + Math.random() * 8) + 's';
+        b.style.animationDelay = Math.random() * 7 + 's';
+        frag.appendChild(b);
+      }
+      document.body.appendChild(frag);
+    }
+
+    function buatIkan() {
+      const ikans = ['🐟', '🐠'];
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 5; i++) {
+        const f = document.createElement('div');
+        f.className = 'fish';
+        f.textContent = ikans[i % 2];
+        f.style.top = (18 + Math.random() * 64) + '%';
+        f.style.animationDuration = (22 + Math.random() * 16) + 's';
+        f.style.animationDelay = Math.random() * 10 + 's';
+        f.style.fontSize = (18 + Math.random() * 10) + 'px';
+        frag.appendChild(f);
+      }
+      document.body.appendChild(frag);
+    }
+
+    function buatPartikel() {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 14; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (12 + Math.random() * 10) + 's';
+        p.style.animationDelay = Math.random() * 8 + 's';
+        frag.appendChild(p);
+      }
+      document.body.appendChild(frag);
+    }
+
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const btn = document.getElementById('btnKirim');
+
+    // Daftar jawaban
+    const jawabanNormal = 'me fishgpt';
+    const jawabanSpesial = "i'm gpt by VelvetEcho ON MoonVibes";
+
+    function pilihJawaban() {
+      // Kira-kira 1 dari 6 kali muncul yang spesial
+      return Math.random() < 0.17 ? jawabanSpesial : jawabanNormal;
+    }
+
+    function ketik(teks, elemen, isSpecial) {
+      let i = 0;
+      elemen.textContent = '';
+      if (isSpecial) elemen.classList.add('special');
+
+      function step() {
+        if (i < teks.length) {
+          elemen.textContent += teks[i];
+          mainkanSuaraKetik();
+          i++;
+          chat.scrollTop = chat.scrollHeight;
+          setTimeout(step, 70);
+        }
+      }
+      step();
+    }
+
+    function kirim() {
+      const pesan = input.value.trim();
+      if (!pesan) return;
+
+      initAudio();
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg user';
+      userDiv.textContent = 'Kamu: ' + pesan;
+      chat.appendChild(userDiv);
+      chat.scrollTop = chat.scrollHeight;
+      input.value = '';
+
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'msg bot';
+        chat.appendChild(botDiv);
+
+        const jawaban = pilihJawaban();
+        const isSpecial = jawaban === jawabanSpesial;
+        ketik(jawaban, botDiv, isSpecial);
+      }, 380);
+    }
+
+    btn.addEventListener('click', kirim);
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') kirim();
+    });
+
+    buatGelembung();
+    buatIkan();
+    buatPartikel();
+  </script>
+</body>
+  </html>
